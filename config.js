@@ -4,7 +4,7 @@
 
 // رابط تطبيق الويب الخاص بـ Google Apps Script (Code.gs)
 // بعد نشر Code.gs كـ Web App، الصقي الرابط هنا
-const API_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+const API_URL = "https://script.google.com/macros/s/AKfycbyahEO3FfHvSuhb39kEoH1kgBMdIc6HfSLxOwPoY0YtkBoMeeMgdoq56nHhpFE9zikV/exec";
 
 // ------------------------------------------------------------
 // نداء عام للـ API مع إعادة محاولة تلقائية عند الفشل

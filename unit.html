@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>نظام توثيق الأداء — الوحدة</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <div class="title">نظام توثيق الأداء</div>
+      <div class="sub" id="userLabel"></div>
+    </div>
+    <button onclick="logout()">تسجيل الخروج</button>
+  </div>
+
+  <div class="page">
+
+    <!-- ============ الصفحة الرئيسية: شبكة الأيقونات ============ -->
+    <div id="homeView">
+      <div class="icon-grid" id="iconGrid"></div>
+    </div>
+
+    <!-- ============ قسم: البيانات الأساسية ============ -->
+    <div id="basicView" class="hidden">
+      <div class="section-header">
+        <button class="back-link" onclick="goHome()">→ رجوع للرئيسية</button>
+        <h2>البيانات الأساسية</h2>
+      </div>
+
+      <form id="basicForm">
+        <div class="card">
+          <h3>الجهة الرئيسة</h3>
+          <div class="field">
+            <label>الجهة الرئيسة *</label>
+            <select id="mainEntity" required>
+              <option value="إدارة التعليم النسائي">إدارة التعليم النسائي</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>الجهة التي ترفع التقرير</h3>
+          <div class="grid-2">
+            <div class="field">
+              <label>نوع الجهة *</label>
+              <select id="reportingType" required>
+                <option value="">اختاري...</option>
+                <option value="إدارة">إدارة</option>
+                <option value="قسم">قسم</option>
+                <option value="وحدة">وحدة</option>
+                <option value="مكتب">مكتب</option>
+                <option value="مركز">مركز</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>اسم القسم *</label>
+              <select id="departmentName" required>
+                <option value="">اختاري...</option>
+                <option value="قسم شؤون المكاتب">قسم شؤون المكاتب</option>
+                <option value="قسم البرامج القرآنية">قسم البرامج القرآنية</option>
+                <option value="أخرى">أخرى</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field hidden" id="otherDeptWrap">
+            <label>اكتبي اسم القسم</label>
+            <input type="text" id="otherDeptName" />
+          </div>
+
+          <div class="grid-2">
+            <div class="field hidden" id="officeWrap">
+              <label>اسم المكتب *</label>
+              <select id="officeName">
+                <option value="">اختاري...</option>
+                <option value="مكتب الداخل">مكتب الداخل</option>
+                <option value="مكتب الحوية">مكتب الحوية</option>
+              </select>
+            </div>
+
+            <div class="field hidden" id="unitWrap">
+              <label>اسم الوحدة *</label>
+              <select id="unitName">
+                <option value="">اختاري القسم أولاً...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>الفترة التي يغطيها التقرير</h3>
+          <div class="field">
+            <label>نوع الفترة *</label>
+            <select id="periodType" required>
+              <option value="">اختاري...</option>
+              <option value="شهري">شهري</option>
+              <option value="ربع سنوي">ربع سنوي</option>
+              <option value="فصلي">فصلي</option>
+              <option value="نصف سنوي">نصف سنوي</option>
+              <option value="سنوي">سنوي</option>
+              <option value="تقرير برنامج أو مشروع">تقرير برنامج أو مشروع</option>
+              <option value="صيفي">صيفي</option>
+            </select>
+          </div>
+
+          <div class="grid-2">
+            <div class="field hidden" id="monthWrap">
+              <label>الشهر</label>
+              <select id="reportMonth">
+                <option value="">اختاري...</option>
+                <option>محرم</option><option>صفر</option><option>ربيع الأول</option>
+                <option>ربيع الآخر</option><option>جمادى الأولى</option><option>جمادى الآخرة</option>
+                <option>رجب</option><option>شعبان</option><option>رمضان</option>
+                <option>شوال</option><option>ذو القعدة</option><option>ذو الحجة</option>
+              </select>
+            </div>
+
+            <div class="field hidden" id="semesterWrap">
+              <label>الفصل</label>
+              <select id="reportSemester">
+                <option value="">اختاري...</option>
+                <option value="الأول">الأول</option>
+                <option value="الثاني">الثاني</option>
+                <option value="الصيفي">الصيفي</option>
+              </select>
+            </div>
+
+            <div class="field" id="hijriYearWrap">
+              <label>العام الهجري</label>
+              <select id="hijriYear"></select>
+            </div>
+          </div>
+
+          <div class="grid-2 hidden" id="dateRangeWrap">
+            <div class="field">
+              <label>تاريخ البداية</label>
+              <input type="date" id="startDate" />
+            </div>
+            <div class="field">
+              <label>تاريخ النهاية</label>
+              <input type="date" id="endDate" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>بيانات معدة التقرير</h3>
+          <div class="grid-2">
+            <div class="field">
+              <label>الاسم *</label>
+              <input type="text" id="preparerName" required />
+            </div>
+            <div class="field">
+              <label>المسمى الوظيفي *</label>
+              <input type="text" id="preparerTitle" required />
+            </div>
+          </div>
+          <div class="field">
+            <label>اسم الرئيسة المباشرة *</label>
+            <input type="text" id="directManagerName" required />
+          </div>
+        </div>
+
+        <div class="actions-row">
+          <button type="submit" class="btn" id="saveBasicBtn">حفظ البيانات الأساسية</button>
+        </div>
+        <div class="status-msg" id="basicStatus"></div>
+      </form>
+    </div>
+
+    <!-- ============ الأقسام الأخرى: عنصر نائب ============ -->
+    <div id="placeholderView" class="hidden">
+      <div class="section-header">
+        <button class="back-link" onclick="goHome()">→ رجوع للرئيسية</button>
+        <h2 id="placeholderTitle"></h2>
+      </div>
+      <div class="card">
+        <p style="color: var(--muted); text-align:center; margin: 10px 0;">
+          هذا القسم قيد الإنشاء وسيُضاف قريبًا بنفس أسلوب "البيانات الأساسية".
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="config.js"></script>
+  <script>
+    const user = requireSession("index.html");
+    if (user) {
+      document.getElementById("userLabel").textContent =
+        (user.name || "") + (user.unit ? " — " + user.unit : "");
+    }
+
+    // ----------------------------------------------------------
+    // شبكة الأيقونات (١٥ قسم) — مجمّعة في شبكة واحدة
+    // ----------------------------------------------------------
+    const SECTIONS = [
+      { key: "basic", label: "البيانات الأساسية", icon: "📋", ready: true },
+      { key: "goals", label: "الأهداف والمستهدفات", icon: "🎯", ready: false },
+      { key: "kpis", label: "مؤشرات الأداء", icon: "📊", ready: false },
+      { key: "programs", label: "الأعمال والبرامج", icon: "🗂️", ready: false },
+      { key: "tools", label: "أدوات القياس", icon: "🧪", ready: false },
+      { key: "analysis", label: "تحليل النتائج", icon: "🔍", ready: false },
+      { key: "strengths", label: "نقاط القوة", icon: "💪", ready: false },
+      { key: "difficulties", label: "الصعوبات والتحديات", icon: "⚠️", ready: false },
+      { key: "improvements", label: "فرص التحسين", icon: "🚀", ready: false },
+      { key: "initiatives", label: "المبادرات والممارسات النوعية", icon: "💡", ready: false },
+      { key: "impact", label: "الأثر وقصص النجاح", icon: "🌟", ready: false },
+      { key: "recommendations", label: "التوصيات", icon: "✅", ready: false },
+      { key: "nextplan", label: "خطة الفترة القادمة", icon: "🗓️", ready: false },
+      { key: "evidence", label: "الشواهد والمرفقات", icon: "📎", ready: false },
+      { key: "review", label: "المراجعة والاعتماد", icon: "🖊️", ready: false },
+    ];
+
+    const iconGrid = document.getElementById("iconGrid");
+    SECTIONS.forEach((s) => {
+      const btn = document.createElement("button");
+      btn.className = "icon-tile" + (s.ready ? "" : " disabled");
+      btn.innerHTML = `<span class="ic">${s.icon}</span><span class="lb">${s.label}</span>`;
+      btn.onclick = () => openSection(s);
+      iconGrid.appendChild(btn);
+    });
+
+    function openSection(s) {
+      document.getElementById("homeView").classList.add("hidden");
+      if (s.key === "basic") {
+        document.getElementById("basicView").classList.remove("hidden");
+        loadExistingBasicData();
+      } else {
+        document.getElementById("placeholderTitle").textContent = s.label;
+        document.getElementById("placeholderView").classList.remove("hidden");
+      }
+    }
+
+    function goHome() {
+      document.getElementById("basicView").classList.add("hidden");
+      document.getElementById("placeholderView").classList.add("hidden");
+      document.getElementById("homeView").classList.remove("hidden");
+    }
+
+    // ----------------------------------------------------------
+    // العام الهجري: تعبئة قائمة السنوات
+    // ----------------------------------------------------------
+    (function fillHijriYears() {
+      const sel = document.getElementById("hijriYear");
+      const current = 1447; // عدّليها عند الحاجة
+      sel.innerHTML = '<option value="">اختاري...</option>';
+      for (let y = current - 3; y <= current + 1; y++) {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = y;
+        sel.appendChild(opt);
+      }
+    })();
+
+    // ----------------------------------------------------------
+    // القسم -> الوحدات (عدّلي القائمة لاحقًا حسب هيكلتكم الفعلية)
+    // ----------------------------------------------------------
+    const UNITS_BY_DEPT = {
+      "قسم شؤون المكاتب": ["وحدة المتابعة", "وحدة الإشراف", "أخرى"],
+      "قسم البرامج القرآنية": ["وحدة الحلقات", "وحدة المسابقات", "أخرى"],
+      "أخرى": ["أخرى"],
+    };
+
+    const departmentSel = document.getElementById("departmentName");
+    const otherDeptWrap = document.getElementById("otherDeptWrap");
+    const reportingTypeSel = document.getElementById("reportingType");
+    const officeWrap = document.getElementById("officeWrap");
+    const unitWrap = document.getElementById("unitWrap");
+    const unitSel = document.getElementById("unitName");
+
+    departmentSel.addEventListener("change", () => {
+      otherDeptWrap.classList.toggle("hidden", departmentSel.value !== "أخرى");
+      const units = UNITS_BY_DEPT[departmentSel.value] || ["أخرى"];
+      unitSel.innerHTML = units.map((u) => `<option value="${u}">${u}</option>`).join("");
+    });
+
+    reportingTypeSel.addEventListener("change", () => {
+      officeWrap.classList.toggle("hidden", reportingTypeSel.value !== "مكتب");
+      unitWrap.classList.toggle("hidden", reportingTypeSel.value !== "وحدة");
+    });
+
+    // ----------------------------------------------------------
+    // الفترة: إظهار/إخفاء الحقول الفرعية حسب النوع
+    // ----------------------------------------------------------
+    const periodTypeSel = document.getElementById("periodType");
+    const monthWrap = document.getElementById("monthWrap");
+    const semesterWrap = document.getElementById("semesterWrap");
+    const dateRangeWrap = document.getElementById("dateRangeWrap");
+
+    periodTypeSel.addEventListener("change", () => {
+      const v = periodTypeSel.value;
+      monthWrap.classList.toggle("hidden", v !== "شهري");
+      semesterWrap.classList.toggle("hidden", !["فصلي", "نصف سنوي"].includes(v));
+      dateRangeWrap.classList.toggle(
+        "hidden",
+        !["ربع سنوي", "تقرير برنامج أو مشروع", "صيفي"].includes(v)
+      );
+    });
+
+    // ----------------------------------------------------------
+    // تحميل بيانات محفوظة سابقًا (إن وجدت) لهذه الوحدة
+    // ----------------------------------------------------------
+    async function loadExistingBasicData() {
+      try {
+        const data = await callApi("getBasicData", { unit: user.unit, username: user.username });
+        if (data.record) {
+          const r = data.record;
+          document.getElementById("reportingType").value = r.reportingType || "";
+          reportingTypeSel.dispatchEvent(new Event("change"));
+          document.getElementById("departmentName").value = r.departmentName || "";
+          departmentSel.dispatchEvent(new Event("change"));
+          document.getElementById("otherDeptName").value = r.otherDeptName || "";
+          document.getElementById("officeName").value = r.officeName || "";
+          document.getElementById("unitName").value = r.unitName || "";
+          document.getElementById("periodType").value = r.periodType || "";
+          periodTypeSel.dispatchEvent(new Event("change"));
+          document.getElementById("reportMonth").value = r.reportMonth || "";
+          document.getElementById("reportSemester").value = r.reportSemester || "";
+          document.getElementById("hijriYear").value = r.hijriYear || "";
+          document.getElementById("startDate").value = r.startDate || "";
+          document.getElementById("endDate").value = r.endDate || "";
+          document.getElementById("preparerName").value = r.preparerName || "";
+          document.getElementById("preparerTitle").value = r.preparerTitle || "";
+          document.getElementById("directManagerName").value = r.directManagerName || "";
+        }
+      } catch (e) {
+        // لا يوجد بيانات سابقة أو تعذر الاتصال — تجاهل بصمت والسماح بالإدخال من جديد
+      }
+    }
+
+    // ----------------------------------------------------------
+    // حفظ البيانات الأساسية
+    // ----------------------------------------------------------
+    document.getElementById("basicForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const btn = document.getElementById("saveBasicBtn");
+      const statusEl = document.getElementById("basicStatus");
+
+      const payload = {
+        unit: user.unit,
+        username: user.username,
+        mainEntity: document.getElementById("mainEntity").value,
+        reportingType: document.getElementById("reportingType").value,
+        departmentName: document.getElementById("departmentName").value,
+        otherDeptName: document.getElementById("otherDeptName").value,
+        officeName: document.getElementById("officeName").value,
+        unitName: document.getElementById("unitName").value,
+        periodType: document.getElementById("periodType").value,
+        reportMonth: document.getElementById("reportMonth").value,
+        reportSemester: document.getElementById("reportSemester").value,
+        hijriYear: document.getElementById("hijriYear").value,
+        startDate: document.getElementById("startDate").value,
+        endDate: document.getElementById("endDate").value,
+        preparerName: document.getElementById("preparerName").value,
+        preparerTitle: document.getElementById("preparerTitle").value,
+        directManagerName: document.getElementById("directManagerName").value,
+      };
+
+      setBtnBusy(btn, true, "جارِ الحفظ...");
+      try {
+        await callApi("saveBasicData", payload);
+        showStatus(statusEl, "تم حفظ البيانات الأساسية بنجاح ✅", false);
+      } catch (err) {
+        showStatus(statusEl, err.message || "تعذر الحفظ، حاولي مرة أخرى", true);
+      } finally {
+        setBtnBusy(btn, false);
+      }
+    });
+  </script>
+</body>
+</html>
